@@ -1,1 +1,265 @@
-a
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, user-scalable=0, minimal-ui">
+    <title>DropLoader测试</title>
+</head>
+<style>
+    @charset "utf-8";
+    .js-load-more{
+        padding:0 15px;
+        width:120px;
+        height:30px;
+        background-color:#D31733;
+        color:#fff;
+        line-height:30px;
+        text-align:center;
+        border-radius:5px;
+        margin:20px auto;
+        border:0 none;
+        font-size:16px;
+        display:none;/*默认不显示，ajax调用成功后才决定显示与否*/
+    }
+    html {
+        height:100%;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+    }
+    body {
+        height:100%;
+        line-height: 1.6;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    a img {
+        border: 0;
+    }
+    a {
+        text-decoration: none;
+    }
+    .panel {
+        /*height: 100%;*/
+        min-height: 640px;
+        background-color: #FFFFFF;
+        /*position: relative;*/
+        overflow: hidden;
+    }
+    .panel_hd {
+        padding: 14px 15px 10px;
+        color: #999999;
+        font-size: 13px;
+        position: relative;
+    }
+    .media_box {
+        padding: 15px;
+        position: relative;
+    }
+    .media_box.media_text .media_title {
+        margin-bottom: 8px;
+    }
+    .media_box .media_title {
+        font-weight: 400;
+        font-size: 17px;
+        width: auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-wrap: normal;
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+    .media_box .media_desc {
+        color: #999999;
+        font-size: 13px;
+        line-height: 1.2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+
+    .drop_notice {
+        color: #000000;
+        font-size: 13px;
+        line-height: 1.2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        text-align: center;
+        z-index: -999;
+        background: #d6d0d0;
+        height: 15px;
+        width:100%;
+    }
+    .drop_up{
+        position:relative;
+        bottom:45px;
+        /*padding-bottom: 30px;*/
+        padding-top:30px;
+        margin: -5px;
+    }
+    .message_up {
+        margin: -5px;
+    }
+    .message_down {
+        margin: 5px;
+    }
+    .drop_down{
+        position:absolute;
+        top:0px;
+        padding-bottom:30px;
+    }
+    .content{
+        height:100%;
+    }
+    .notice {
+            position: fixed;
+    top: 40%;
+    /* left: 40%; */
+    margin: 15px 0;
+    background: #49e86c;
+    padding: 15px 0;
+    width: 100%;
+    text-align: center;
+    filter: alpha(opacity=70);
+    -moz-opacity: 0.7;
+    opacity: 0.7;
+    font-weight: 900;
+    color: #bf3a3a;
+    display:none;
+    }
+</style>
+<body>
+    <div class="content" id="content">
+        <div class="panel panel_access" id="block">
+            <div class="panel_hd">文章列表</div>
+            <div class="panel_bd js-blog-list" id="list">
+                <div class="media_box media_text">
+                    <a href="http://www.cnblogs.com/52fhy/p/5271447.html" target="_blank">
+                        <h4 class="media_title">[置顶]Laravel5.0学习--01 入门</h4>
+                    </a>
+                    <p class="media_desc">摘要: 本文以laravel5.0.22为例。 环境需求 Laravel5.0 框架有一些系统上的需求： PHP 版本 = 5.4 Mcrypt PHP 扩展 OpenSSL PHP 扩展 Mbstring PHP 扩展 Tokenizer PHP 扩展 在 PHP 5.5 之后， 有些操作系统需要手动安装</p>
+                </div>
+                <div class="media_box media_text">
+                    <a href="http://www.cnblogs.com/52fhy/p/5271447.html" target="_blank">
+                        <h4 class="media_title">[置顶]Laravel5.0学习--02 入门</h4>
+                    </a>
+                    <p class="media_desc">摘要: 本文以laravel5.0.22为例。 环境需求 Laravel5.0 框架有一些系统上的需求： PHP 版本 = 5.4 Mcrypt PHP 扩展 OpenSSL PHP 扩展 Mbstring PHP 扩展 Tokenizer PHP 扩展 在 PHP 5.5 之后， 有些操作系统需要手动安装</p>
+                </div>
+                <div class="media_box media_text">
+                    <a href="http://www.cnblogs.com/52fhy/p/5271447.html" target="_blank">
+                        <h4 class="media_title">[置顶]Laravel5.0学习--03 入门</h4>
+                    </a>
+                    <p class="media_desc">摘要: 本文以laravel5.0.22为例。 环境需求 Laravel5.0 框架有一些系统上的需求： PHP 版本 = 5.4 Mcrypt PHP 扩展 OpenSSL PHP 扩展 Mbstring PHP 扩展 Tokenizer PHP 扩展 在 PHP 5.5 之后， 有些操作系统需要手动安装</p>
+                </div>
+                <div class="media_box media_text">
+                    <a href="http://www.cnblogs.com/52fhy/p/5271447.html" target="_blank">
+                        <h4 class="media_title">[置顶]Laravel5.0学习--04 入门</h4>
+                    </a>
+                    <p class="media_desc">摘要: 本文以laravel5.0.22为例。 环境需求 Laravel5.0 框架有一些系统上的需求： PHP 版本 = 5.4 Mcrypt PHP 扩展 OpenSSL PHP 扩展 Mbstring PHP 扩展 Tokenizer PHP 扩展 在 PHP 5.5 之后， 有些操作系统需要手动安装</p>
+                </div>
+                <div class="media_box media_text">
+                    <a href="http://www.cnblogs.com/52fhy/p/5271447.html" target="_blank">
+                        <h4 class="media_title">[置顶]Laravel5.0学习--05 入门</h4>
+                    </a>
+                    <p class="media_desc">摘要: 本文以laravel5.0.22为例。 环境需求 Laravel5.0 框架有一些系统上的需求： PHP 版本 = 5.4 Mcrypt PHP 扩展 OpenSSL PHP 扩展 Mbstring PHP 扩展 Tokenizer PHP 扩展 在 PHP 5.5 之后， 有些操作系统需要手动安装</p>
+                </div>
+                <div class="media_box media_text">
+                    <a href="http://www.cnblogs.com/52fhy/p/5271447.html" target="_blank">
+                        <h4 class="media_title">[置顶]Laravel5.0学习--06 入门</h4>
+                    </a>
+                    <p class="media_desc">摘要: 本文以laravel5.0.22为例。 环境需求 Laravel5.0 框架有一些系统上的需求： PHP 版本 = 5.4 Mcrypt PHP 扩展 OpenSSL PHP 扩展 Mbstring PHP 扩展 Tokenizer PHP 扩展 在 PHP 5.5 之后， 有些操作系统需要手动安装</p>
+                </div>
+                <div class="media_box media_text">
+                    <a href="http://www.cnblogs.com/52fhy/p/5271447.html" target="_blank">
+                        <h4 class="media_title">[置顶]Laravel5.0学习--07 入门</h4>
+                    </a>
+                    <p class="media_desc">摘要: 本文以laravel5.0.22为例。 环境需求 Laravel5.0 框架有一些系统上的需求： PHP 版本 = 5.4 Mcrypt PHP 扩展 OpenSSL PHP 扩展 Mbstring PHP 扩展 Tokenizer PHP 扩展 在 PHP 5.5 之后， 有些操作系统需要手动安装</p>
+                </div>
+                <div class="media_box media_text">
+                    <a href="http://www.cnblogs.com/52fhy/p/5271447.html" target="_blank">
+                        <h4 class="media_title">[置顶]Laravel5.0学习--08 入门</h4>
+                    </a>
+                    <p class="media_desc">摘要: 本文以laravel5.0.22为例。 环境需求 Laravel5.0 框架有一些系统上的需求： PHP 版本 = 5.4 Mcrypt PHP 扩展 OpenSSL PHP 扩展 Mbstring PHP 扩展 Tokenizer PHP 扩展 在 PHP 5.5 之后， 有些操作系统需要手动安装</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="drop_up drop_notice"><div id="drop_up" class="message_up">上拉加载更多</div></div>
+        <div class="drop_down drop_notice"><div id="drop_down" class="message_down">下拉刷新</div></div>
+        <div class="notice">drop down!</div>
+    </div>
+    <!--<script src="/assets/3667d61f/jquery.js"></script>-->
+    <script src="dropLoader.js"></script>
+    <script type="text/javascript">
+        
+        var loader = new DropLoader({
+            //滑动的元素id
+            selectorId: 'block',
+            //滑动加载提示元素id
+            upNoticeId: 'drop_up',
+            downNoticeId: 'drop_down',
+            //窗口 id,默认可以不用配置
+            // windowSelectorId:'block',
+            //加载数据阈值,触发callback阈值
+            loadDataTranslate: 30,
+
+            //锁定不请求数据
+            downLock: false, //下拉锁定
+            upLock: false, //上拉锁定
+            //最大偏移值，实际要除以 reduce，此处作用是偏移时有迟缓感
+            maxTranslateY: 100,
+            reduce: 2,
+
+            //提示内容
+            upNotice: {
+                touchmove: '上拉加载',
+                touchend: '松开立即加载',
+                loading: '加载中...',
+                // noMore: '加载完成'
+            },
+            downNotice: {
+                touchmove: '下拉可以刷新',
+                touchend: '松开立即刷新',
+                loading: '刷新中...',
+                // noMore: '刷新完成'
+            },
+
+            //上拉回调函数
+            upCallback: upCallBack,
+            //下拉回调函数
+            downCallback:downTest,
+        });
+
+        function upCallBack()
+        {
+            var lists = document.getElementsByClassName('media_box');
+            var length = lists.length + 1;
+            var str = '<div class="media_box media_text">';
+            str += '<a href="http://www.cnblogs.com/52fhy/p/5271447.html" target="_blank">';
+            str += '                <h4 class="media_title">[置顶]Laravel5.0学习--'+(length<10? '0' + length: length) +' 入门</h4>';
+            str += '            </a>';
+            str += '            <p class="media_desc">摘要: 本文以laravel5.0.22为例。 环境需求 Laravel5.0 框架有一些系统上的需求： PHP 版本 = 5.4 Mcrypt PHP 扩展 OpenSSL PHP 扩展 Mbstring PHP 扩展 Tokenizer PHP 扩展 在 PHP 5.5 之后， 有些操作系统需要手动安装</p>';
+            str += '        </div>';
+            document.getElementById('list').innerHTML += str;
+
+            loader.calculationDomHeight();
+        }
+
+        function downTest()
+        {
+            document.getElementsByClassName('notice')[0].style="display:block;"
+            setTimeout(function(){
+                document.getElementsByClassName('notice')[0].style="display:none;"
+            },1000);
+        }
+        
+    </script>
+</body>
+</html>
